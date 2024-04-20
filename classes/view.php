@@ -125,10 +125,17 @@ class View
 			$data = get_object_vars($data);
 		}
 
-		// else it better by and array !
-		elseif ($data and ! is_array($data))
+		// if we have any data
+		if ( ! is_null($data))
 		{
-			throw new \InvalidArgumentException('The data parameter only accepts objects and arrays.');
+			// it better by and array !
+			if( ! is_array($data))
+			{
+				throw new \InvalidArgumentException('The data parameter only accepts objects and arrays.');
+			}
+
+			// Add the values to the current data
+			$this->data = $data;
 		}
 
 		$this->auto_filter = is_null($filter) ? \Config::get('security.auto_filter_output', true) : $filter;
@@ -138,12 +145,6 @@ class View
 		if ($file !== null)
 		{
 			$this->set_filename($file);
-		}
-
-		if ($data !== null)
-		{
-			// Add the values to the current data
-			$this->data = $data;
 		}
 
 		// store the current request search paths to deal with out-of-context rendering
