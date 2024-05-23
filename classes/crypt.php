@@ -540,14 +540,21 @@ class Crypt
 	 */
 	protected function decode($value, $key = false, $keylength = false)
 	{
+		// anything to decrypt?
+		if (empty($value))
+		{
+			// nope, return as-is
+			return $value;
+		}
+
 		// legacy or sodium value?
-		$value = explode('S:', (string) $value);
-		if ( ! isset($value[1]))
+		$values = explode('S:', (string) $value);
+		if ( ! isset($values[1]))
 		{
 			// decode using the legacy method
-			return $this->legacy_decode($value[0], $key, $keylength);
+			return $this->legacy_decode($value, $key, $keylength);
 		}
-		$value = $value[1];
+		$value = $values[1];
 
 		// get the binary key
 		if ( ! $key)
