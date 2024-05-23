@@ -28,14 +28,15 @@ class Ftp
 {
 	public static $initialized = false;
 
-	protected $_hostname  = 'localhost';
-	protected $_username  = '';
-	protected $_password  = '';
-	protected $_port      = 21;
-	protected $_timeout   = 90;
-	protected $_passive   = true;
-	protected $_ssl_mode  = false;
-	protected $_debug     = false;
+	protected $_hostname;
+	protected $_username;
+	protected $_password;
+	protected $_port;
+	protected $_timeout;
+	protected $_passive;
+	protected $_ssl_mode;
+	protected $_debug;
+
 	protected $_conn_id   = false;
 
 	/**
@@ -82,7 +83,7 @@ class Ftp
 
 		// fill in defaults if not given
 		$config = array_merge(
-		    array('port' => 21, 'timeout' => 90, 'passive' => true, 'ssl_mode' => false, 'debug' => false),
+		    array('hostname' => 'localhost', 'username' => '', 'password' => '', 'port' => 21, 'timeout' => 90, 'passive' => true, 'ssl_mode' => false, 'debug' => false),
 		    $config);
 
 		// Prep the hostname
