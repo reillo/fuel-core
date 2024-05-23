@@ -34,6 +34,7 @@ class Ftp
 	protected $_port      = 21;
 	protected $_timeout   = 90;
 	protected $_passive   = true;
+	protected $_ssl_mode  = false;
 	protected $_debug     = false;
 	protected $_conn_id   = false;
 
@@ -79,12 +80,17 @@ class Ftp
 			$config = $config_arr;
 		}
 
+		// fill in defaults if not given
+		$config = array_merge(
+		    array('port' => 21, 'timeout' => 90, 'passive' => true, 'ssl_mode' => false, 'debug' => false),
+		    $config);
+
 		// Prep the hostname
 		$this->_hostname = preg_replace('|.+?://|', '', $config['hostname']);
 		$this->_username = $config['username'];
 		$this->_password = $config['password'];
-		$this->_timeout  = ! empty($config['timeout']) ? (int) $config['timeout'] : 90;
-		$this->_port     = ! empty($config['port']) ? (int) $config['port'] : 21;
+		$this->_timeout  = (int) $config['timeout'];
+		$this->_port     = (int) $config['port'];
 		$this->_passive  = (bool) $config['passive'];
 		$this->_ssl_mode = (bool) $config['ssl_mode'];
 		$this->_debug    = (bool) $config['debug'];
@@ -164,7 +170,7 @@ class Ftp
 	 */
 	protected function _is_conn()
 	{
-		if ( ! is_resource($this->_conn_id))
+		if ( ! is_resource($this->_conn_id) and ! $this->_conn_id instanceOf \FTP\Connection)
 		{
 			if ($this->_debug == true)
 			{
